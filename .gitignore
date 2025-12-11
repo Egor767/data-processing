@@ -208,6 +208,7 @@ __marimo__/
 
 
 # PyCharm
+.idea/
 .idea/workspace.xml
 .idea/tasks.xml
 .idea/dictionaries
