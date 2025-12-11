@@ -35,13 +35,13 @@ jobs:
 
       - name: Wait for Postgres
         env:
-          PG_PASSWORD: postgres
+          PGPASSWORD: postgres
         run: |
           until pg_isready -h localhost -p 5432 -U postgres -d etl; do sleep 1; done
 
       - name: Run migrations / init SQL
         env:
-          PG_PASSWORD: postgres
+          PGPASSWORD: postgres
         run: |
           psql -h localhost -p 5432 -U postgres -d etl -f sql/ddl.sql
 
