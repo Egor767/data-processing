@@ -3,5 +3,15 @@ name = "data-processing"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
-requires-python = ">=3.14"
-dependencies = []
+requires-python = ">=3.11"
+dependencies = [
+    "dotenv>=0.9.9",
+    "factory-boy>=3.3.3",
+    "faker>=38.2.0",
+    "pandas>=2.3.3",
+    "psycopg2-binary>=2.9.11",
+    "pydantic>=2.12.5",
+    "pytest>=9.0.2",
+    "pytest-cov>=7.0.0",
+    "sqlalchemy>=2.0.45",
+]
