@@ -39,13 +39,7 @@ jobs:
         run: |
           until pg_isready -h localhost -p 5432 -U postgres -d etl; do sleep 1; done
 
-      - name: Run migrations / init SQL
-        env:
-          PGPASSWORD: postgres
-        run: |
-          psql -h localhost -p 5432 -U postgres -d etl -f sql/ddl.sql
-
-      - name: Run tests
+      - name: Init schema via app code
         env:
           DB_HOST: localhost
           DB_PORT: 5432
@@ -53,12 +47,22 @@ jobs:
           DB_PASSWORD: postgres
           DB_NAME: etl
         run: |
-          pytest -v
+          python -c "from data_pipeline.src.init_schema import init_schema; init_schema()"
 
-      - name: Build docker (optional)
+      - name: Run tests with coverage
+        env:
+          DB_HOST: localhost
+          DB_PORT: 5432
+          DB_USER: postgres
+          DB_PASSWORD: postgres
+          DB_NAME: etl
+        run: |
+          pytest -v --cov=data_pipeline --cov-report=term-missing --cov-report=xml
+
+      - name: Build docker
         run: docker compose build
 
-      - name: Run docker compose (optional)
+      - name: Run docker compose
         env:
           DB_USER: postgres
           DB_PASSWORD: postgres
