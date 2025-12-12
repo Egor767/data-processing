@@ -21,8 +21,22 @@ class DBSettings(BaseModel):
         return f"{self.prefix}://{self.user}:{self.psw}@{self.host}:{self.port}/{self.name}"
 
 
+class MySQLSettings(BaseModel):
+    user: str = os.getenv("MYSQL_USER")
+    psw: str = os.getenv("MYSQL_PASSWORD")
+    host: str = os.getenv("MYSQL_HOST")
+    port: str = int(os.getenv("MYSQL_PORT", 3306))
+    name: str = os.getenv("MYSQL_NAME")
+    prefix: str = "mysql+pymysql"
+
+    @property
+    def url(self) -> str:
+        return f"{self.prefix}://{self.user}:{self.psw}@{self.host}:{self.port}/{self.name}"
+
+
+mysql_settings = MySQLSettings()
 settings = DBSettings()
 
 
-if __name__=="__main__":
+if __name__ == "__main__":
     print(settings.url)

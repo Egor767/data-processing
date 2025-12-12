@@ -30,6 +30,16 @@ def call_fn_etl_data_load(start_date: str, end_date: str):
         conn.commit()
 
 
+def call_fn_dm_data_load(start_date: str, end_date: str):
+    with engine.connect() as conn:
+        conn.execute(text("SET search_path TO s_sql_dds, public"))
+        conn.execute(
+            text("SELECT s_sql_dds.fn_dm_data_load(:start, :end)"),
+            {"start": start_date, "end": end_date}
+        )
+        conn.commit()
+
+
 def get_unstructured_data(limit: int = 10):
     session = get_session()
     try:
@@ -47,6 +57,17 @@ def get_structured_data(limit: int = 10):
         result = session.execute(text(f"SELECT * FROM s_sql_dds.t_sql_source_structured ORDER BY register_date DESC LIMIT {limit}"))
         df = pd.DataFrame(result.fetchall(), columns=result.keys())
         total_count = session.execute(text("SELECT COUNT(*) FROM s_sql_dds.t_sql_source_structured")).scalar()
+        return df, total_count
+    finally:
+        session.close()
+
+
+def get_dm_data(limit: int = 10):
+    session = get_session()
+    try:
+        result = session.execute(text(f"SELECT * FROM s_sql_dds.t_dm_task ORDER BY register_date DESC LIMIT {limit}"))
+        df = pd.DataFrame(result.fetchall(), columns=result.keys())
+        total_count = session.execute(text("SELECT COUNT(*) FROM s_sql_dds.t_dm_task")).scalar()
         return df, total_count
     finally:
         session.close()

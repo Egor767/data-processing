@@ -11,7 +11,15 @@ def init_schema():
     ddl_order = [
         sql_dir / "table" / "t_sql_source_unstructured.sql",
         sql_dir / "table" / "t_sql_source_structured.sql",
+
+        sql_dir / "table" / "t_dm.sql",
+
+        sql_dir / "table" / "t_dm_task.sql",
+
         sql_dir / "function" / "fn_etl_data_load.sql",
+        sql_dir / "function" / "fn_dm_data_load.sql",
+
+        sql_dir / "view" / "v_dm_task.sql",
     ]
 
     with engine.connect() as conn:
@@ -28,4 +36,3 @@ def init_schema():
                 print(f"Executed: {sql_file.name}")
             else:
                 print(f"Warning: SQL file not found: {sql_file}")
-
