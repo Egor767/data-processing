@@ -13,4 +13,4 @@ BEGIN
         email_id, status_id, age, value, register_date
     FROM t_dm_stg_task
     WHERE register_date BETWEEN start_dt AND end_dt;
-END;
+END
