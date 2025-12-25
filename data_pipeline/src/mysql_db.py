@@ -62,19 +62,13 @@ def export_v_dm_to_mysql_stg():
     query = text("SELECT * FROM s_sql_dds.v_dm_task")
     pg_df = pd.read_sql(query, pg_engine)
 
-    if 'task_sk' in pg_df.columns:
-        pg_df = pg_df.drop(columns=['task_sk'])
+    print(f"Exporting {len(pg_df)} rows with {len(pg_df.columns)} columns: {list(pg_df.columns)}")
 
     with get_mysql_engine().connect() as conn:
         conn.execute(text("TRUNCATE TABLE t_dm_stg_task"))
         conn.commit()
-        print("Cleared t_dm_stg_task")
 
     pg_df.to_sql(
-        "t_dm_stg_task",
-        get_mysql_engine(),
-        if_exists="append",
-        index=False,
-        method="multi"
+        "t_dm_stg_task", get_mysql_engine(),
+        if_exists="append", index=False, method="multi"
     )
-    print(f"Exported {len(pg_df)} rows to MySQL t_dm_stg_task")

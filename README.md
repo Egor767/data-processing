@@ -56,3 +56,22 @@ ORDER BY task_sk
 LIMIT 5;
 "
 ```
+
+docker-compose exec db psql -U postgres -d etl -c "
+-- 1. Счетчик ДО
+SELECT 'BEFORE' as step, COUNT(*) as dq_count FROM s_sql_dds.t_dq_check_results;
+
+-- 2. ПРАВИЛЬНЫЙ INSERT со ВСЕМИ NOT NULL полями
+INSERT INTO s_sql_dds.t_dm_task (task_sk, src_id, register_date) 
+VALUES (888, 'trigger-test-123', CURRENT_DATE);
+
+-- 3. Счетчик ПОСЛЕ (должно +5!)
+SELECT 'AFTER' as step, COUNT(*) as dq_count FROM s_sql_dds.t_dq_check_results;
+
+-- 4. Последние 5 проверок (должны быть свежие!)
+SELECT execution_date, check_type, status 
+FROM s_sql_dds.t_dq_check_results 
+ORDER BY execution_date DESC LIMIT 20;
+"
+
+

@@ -93,19 +93,6 @@ class UserRecordFactory(factory.Factory):
 
 
 def get_dataset(n_rows: int = 200, use_static_uuid: bool = False) -> list[UserRecord]:
-    """
-    Генерация "сломанного" dataset для ETL.
-
-    Args:
-        n_rows: количество записей
-        use_static_uuid: принудительно использовать один UUID для всех (100% дубли)
-
-    Дефекты:
-    - Дубли ID (~15%)
-    - Пропуски: name(15%), city(25%), age(20%), email(25%), value(15%)
-    - Invalid: age(-5/150/999), country(полные названия), gender(неправильный case)
-    - Malformed: email с invalid_, future register_date, negative value
-    """
     if use_static_uuid:
         global static_uuid
         static_uuid = uuid4()
@@ -113,8 +100,8 @@ def get_dataset(n_rows: int = 200, use_static_uuid: bool = False) -> list[UserRe
     return [UserRecordFactory() for _ in range(n_rows)]
 
 
-# if __name__ == "__main__":
-#     dataset = get_dataset(10)
-#     print(f"Сгенерировано {len(dataset)} записей")
-#     for i in range(len(dataset)):
-#         print(dataset[i].dict())
+if __name__ == "__main__":
+    dataset = get_dataset(10)
+    print(f"Generated {len(dataset)} rows")
+    for i in range(len(dataset)):
+        print(dataset[i].dict())

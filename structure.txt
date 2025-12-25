@@ -1,0 +1,75 @@
+
+C:.
+|   .coverage
+|   .env
+|   .gitignore
+|   .python-version
+|   docker-compose.yml
+|   Dockerfile
+|   pyproject.toml
+|   README.md
+|   requirements.txt
+|   structure.txt
+|   uv.lock
+|   
++---.github
+|   \---workflows
+|           ci.yml
+|
++---data_pipeline
+|   |   main.py
+|   |   __init__.py
+|   |   
+|   +---src
+|   |   |   .mysql_db.py.swp
+|   |   |   config.py
+|   |   |   create_checks.py
+|   |   |   db.py
+|   |   |   etl.py
+|   |   |   export_to_mysql.py
+|   |   |   fill_dm_table.py
+|   |   |   fill_structured_table.py
+|   |   |   get_dataset.py
+|   |   |   init_schema.py
+|   |   |   load_data_to_db.py
+|   |   |   models.py
+|   |   |   mysql_db.py
+|   |   |   populate_dimensions.py
+|   |   |   __init__.py
+|   |   |
+|   +---tests
+|   |   |   conftest.py
+|   |   |   test_etl_flow.py
+|   |   |   test_sql_funcs.py
+|   |   |   __init__.py
+|   |   |
+|           
+\---sql
+    +---dds
+    |   \---s_sql_dds
+    |       +---function
+    |       |       fn_dm_data_load.sql
+    |       |       fn_dq_checks_load.sql
+    |       |       fn_etl_data_load.sql
+    |       |       
+    |       +---table
+    |       |       t_dm.sql
+    |       |       t_dm_task.sql
+    |       |       t_dq_check_results.sql
+    |       |       t_sql_source_structured.sql
+    |       |       t_sql_source_unstructured.sql
+    |       |       
+    |       \---view
+    |               v_dm_task.sql
+    |               
+    \---dm
+        \---s_sql_dm
+            +---function
+            |       fn_dm_data_stg_to_dm_load.sql
+            |       
+            +---table
+            |       t_dm_stg_task.sql
+            |       t_dm_task.sql
+            |       
+            \---view
+                    v_dm_task.sql

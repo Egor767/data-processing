@@ -1,0 +1,1 @@
+[2025-12-25 12:57:57] Critical error: 70.0% checks not passed (7/10)
